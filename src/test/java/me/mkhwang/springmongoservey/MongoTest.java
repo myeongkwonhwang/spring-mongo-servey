@@ -17,32 +17,31 @@ import org.junit.jupiter.api.Test;
 import static java.util.Collections.singletonList;
 
 @Slf4j
-public class MongoTest {
+class MongoTest {
 
     private MongoClient client;
 
     @BeforeEach
     public void getMongoCredential() {
-        final MongoCredential credential = MongoCredential.createCredential("userName", "database", "password".toCharArray());
-        final MongoClient mongoClient = MongoClients.create(
+        final MongoCredential credential = MongoCredential.createCredential("mkhwang", "prod_match", "tg085013@".toCharArray());
+        client = MongoClients.create(
                 MongoClientSettings.builder()
                         .credential(credential)
                         .applyToClusterSettings(s -> {
                             s.hosts(singletonList(new ServerAddress("127.0.0.1", 27017)));
                         })
                         .build());
-        client = mongoClient;
     }
 
     @Test
     void test() {
-        final MongoDatabase database = client.getDatabase("database");
+        final MongoDatabase database = client.getDatabase("prod_match");
         for (final String collectionName : database.listCollectionNames()) {
             final MongoCollection<Document> collection = database.getCollection(collectionName);
             final long count = collection.estimatedDocumentCount();
             log.debug("{}.{}.count: {}", database, collectionName, count);
         }
-        final MongoCollection<Document> collection = database.getCollection("collection")
+        final MongoCollection<Document> collection = database.getCollection("prod_tag")
                 .withCodecRegistry(MongoClientSettings.getDefaultCodecRegistry());
         final FindIterable<Document> limit = collection.find().limit(10);
         JSONArray jsonArray = new JSONArray();
