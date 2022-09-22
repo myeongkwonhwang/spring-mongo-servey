@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      database: prod_match
+      port: 27017
+      host: 127.0.0.1
+      username: mkhwang
+      password: tg085013@
+server:
+  port: 8081
